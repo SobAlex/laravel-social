@@ -1,13 +1,13 @@
 <template lang="">
-    <div class="w-96 mx-auto">
-        Personal
+    <div>
+        404 - Page Not Found
     </div>
 </template>
 
 <script>
 export default {
 
-    name: 'Personal'
+    name: 'PageNotFound'
 
 }
 </script>

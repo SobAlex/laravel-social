@@ -17,7 +17,12 @@ const router = createRouter({
         {
             path: '/users/personal', component: () => import('../views/user/Personal.vue'),
             name: 'user.personal'
-        }
+        },
+
+        // {
+        //     path: '*', component: () => import('../views/PageNotFound.vue'),
+        //     name: '404'
+        // }
     ]
 })
 
