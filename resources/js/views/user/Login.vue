@@ -9,42 +9,44 @@
         <div>
             <input @click.prevent="login" type="submit" value="login" class="block float-right mx-auto w-32 p-1 bg-sky-400 text-white rounded-lg">
         </div>
+        <div>
+            <div v-if="error" class="text-red-600">{{ this.error }}</div>
+        </div>
     </div>
 </template>
 
 <script>
+
 export default {
+
     name: "Login",
 
     data() {
         return {
             email: null,
             password: null,
+            error: null,
         }
     },
 
     methods: {
         login() {
-            axios.get('/sanctum/csrf-cookie')
-
-                .then(response => {
-
-                    console.log(response)
-
-                    axios.post('/login', {email: this.email, password: this.password})
-                        .then(r => {
-                            localStorage.setItem('x_xsrf_token', r.config.headers['X-XSRF-TOKEN'])
-                            this.$router.push({name: 'user.personal'})
-
-                            console.log(r)
-                        })
-                        .catch(err => {
-                            console.log(err)
-                        })
+            axios.post('/api/auth/login', {
+                email: this.email,
+                password: this.password
+            })
+                .then(res => {
+                    localStorage.setItem('access_token', res.data.access_token);
+                    this.$router.push({name: 'user.personal'});
+                })
+                .catch(error => {
+                    this.error = error.response.data.error
                 })
         }
     }
+
 }
+
 </script>
 
 <style scoped>

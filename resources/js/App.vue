@@ -14,8 +14,13 @@
 </template>
 
 <script>
+
+import api from "./api";
+
 export default {
-    name: "App",
+
+    name: "Index",
+
     data() {
         return {
             token: null
@@ -33,15 +38,14 @@ export default {
     },
 
     methods: {
-
         getToken() {
-            this.token = localStorage.getItem('x_xsrf_token')
+            this.token = localStorage.getItem('access_token')
         },
 
         logout() {
-            axios.post('/logout')
-                .then( res => {
-                    localStorage.removeItem('x_xsrf_token')
+            api.post('/api/auth/logout')
+                .then(res => {
+                    localStorage.removeItem('access_token')
                     this.$router.push({name: 'user.login'})
                 })
         }
