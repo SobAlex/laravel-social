@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-//});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//      return $request->user();
+// });
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
@@ -27,6 +27,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::group(['middleware' => 'jwt.auth'], function () {
         Route::post('/post', [App\Http\Controllers\PostController::class, 'store']);
     });
+});
+
+Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::post('/post_images', [App\Http\Controllers\PostImageController::class, 'store']);
 });
 
 Route::group(['namespace' => 'User', 'prefix' => 'users' ], function() {

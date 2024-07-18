@@ -8,21 +8,59 @@
           <textarea v-model="content" rows="4" class="w-96 p-1 mb-2 border border-inherit rounded-lg" placeholder="content"></textarea>
         </div>
 
+        <div class="flex mb-3 items-center">
+            <div>
+                <input @change="storeImage" ref="file" type="file" class="hidden">
+                <a href="#" class="block p-2 w-16 text-center text-sm rounded-3xl bg-sky-500 text-white" @click.prevent="selectFile()">Image</a>
+            </div>
+
+            <div>
+                <a v-if="image" @click.prevent="image = null" class="ml-3" href="#">Cancel</a>
+            </div>
+
+        </div>
+
+        <div class="mt-2 mb-3" v-if="image">
+                <img :src="image.url" alt="preview">
+        </div>
+
         <div>
-            <input class="block float-right mx-auto w-32 p-1 bg-sky-400 text-white rounded-lg" type="submit" value="Publish">
+            <input class="block float-right p-2 w-32 text-center text-sm rounded-lg bg-sky-500 text-white" type="submit" value="Publish">
         </div>
     </div>
 </template>
 
 <script>
+
+import api from '../../api';
+
 export default {
 
     name: 'Personal',
 
     data() {
         return {
-            title: null,
-            contain: null
+            title: '',
+            content: '',
+            image: null
+        }
+    },
+
+    methods: {
+        selectFile() {
+            this.fileInput = this.$refs.file;
+            this.fileInput.click();
+        },
+
+        storeImage(e) {
+            const file = e.target.files[0]
+            const formData = new FormData()
+            formData.append('image', file)
+
+            api.post('/api/post_images', formData)
+                .then(res => {
+                    this.image = res.data.data
+                })
         }
     },
 
