@@ -23,13 +23,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
     Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
     Route::post('me', [App\Http\Controllers\AuthController::class, 'me']);
-
-    Route::group(['middleware' => 'jwt.auth'], function () {
-        Route::post('/post', [App\Http\Controllers\PostController::class, 'store']);
-    });
 });
 
 Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::post('/posts', [App\Http\Controllers\PostController::class, 'store']);
     Route::post('/post_images', [App\Http\Controllers\PostImageController::class, 'store']);
 });
 

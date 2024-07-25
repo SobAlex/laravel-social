@@ -25,7 +25,7 @@
         </div>
 
         <div>
-            <input class="block float-right p-2 w-32 text-center text-sm rounded-lg bg-sky-500 text-white" type="submit" value="Publish">
+            <input @click.prevent="store" class="block float-right p-2 w-32 text-center text-sm rounded-lg bg-sky-500 text-white" type="submit" value="Publish">
         </div>
     </div>
 </template>
@@ -47,6 +47,18 @@ export default {
     },
 
     methods: {
+
+        store() {
+            const id = this.image ? this.image.id : null
+            api.post('/api/posts', {title: this.title, content: this.content, image_id: id})
+            .then(res => {
+                this.title = ''
+                this.content = ''
+                this.image = null
+                console.log(res);
+            })
+        },
+
         selectFile() {
             this.fileInput = this.$refs.file;
             this.fileInput.click();
