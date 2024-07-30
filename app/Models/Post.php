@@ -17,4 +17,9 @@ class Post extends Model
         ->whereNotNull('post_id');
 
     }
+
+    public function getDateAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
 }

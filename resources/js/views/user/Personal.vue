@@ -27,6 +27,18 @@
         <div>
             <input @click.prevent="store" class="block float-right p-2 w-32 text-center text-sm rounded-lg bg-sky-500 text-white" type="submit" value="Publish">
         </div>
+
+        <div v-if="posts" class="mt-16">
+            <div class="mb-8 mt-8 pb-6 border-b border-grey-300" v-for="post in posts">
+                <h1 class="text-lg font-bold">{{ post.title }}</h1>
+
+                <img class="my-6" v-if="post.image_url" :src="post.image_url" :alt="post.title">
+
+                <p>{{ post.content }}</p>
+
+                <p class="text-sm text-right text-slate-500">{{ post.date }}</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -42,8 +54,13 @@ export default {
         return {
             title: '',
             content: '',
-            image: null
+            image: null,
+            posts: []
         }
+    },
+
+    mounted() {
+        this.getPosts()
     },
 
     methods: {
@@ -55,7 +72,14 @@ export default {
                 this.title = ''
                 this.content = ''
                 this.image = null
-                console.log(res);
+                this.posts.unshift(res.data.data)
+            })
+        },
+
+        getPosts() {
+            api.get('/api/posts')
+            .then(res => {
+                this.posts = res.data.data
             })
         },
 
