@@ -2,9 +2,11 @@
     <div class="w-96 mx-auto">
         <div v-if="users">
             <div class="border-b mb-8 pb-8" v-for="user in users">
-                <p>{{ user.id }}</p>
-                <p>{{ user.name }}</p>
-                <p>{{ user.email }}</p>
+                <router-link :to="{ name: 'user.show', params: { id: user.id } }">
+                    <p>{{ user.id }}</p>
+                    <p>{{ user.name }}</p>
+                    <p>{{ user.email }}</p>
+                </router-link>
             </div>
         </div>
     </div>
@@ -31,9 +33,9 @@ export default {
     methods: {
         getUsers() {
             api.get('/api/users')
-            .then(res => {
-                this.users = res.data.data
-            })
+                .then(res => {
+                    this.users = res.data.data
+                })
         }
     }
 
@@ -41,6 +43,4 @@ export default {
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -27,6 +27,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index']);
+    Route::get('/users/{user}/posts', [App\Http\Controllers\UserController::class, 'post']);
 
     Route::post('/posts', [App\Http\Controllers\PostController::class, 'store']);
     Route::get('/posts', [App\Http\Controllers\PostController::class, 'index']);

@@ -29,15 +29,8 @@
         </div>
 
         <div v-if="posts" class="mt-16">
-            <div class="mb-8 mt-8 pb-6 border-b border-grey-300" v-for="post in posts">
-                <h1 class="text-lg font-bold">{{ post.title }}</h1>
-
-                <img class="my-6" v-if="post.image_url" :src="post.image_url" :alt="post.title">
-
-                <p>{{ post.content }}</p>
-
-                <p class="text-sm text-right text-slate-500">{{ post.date }}</p>
-            </div>
+            <h1>Post</h1>
+            <Post v-for="post in posts" :post="post"></Post>
         </div>
     </div>
 </template>
@@ -45,6 +38,7 @@
 <script>
 
 import api from '../../api';
+import Post from '../../components/Post.vue';
 
 export default {
 
@@ -59,6 +53,10 @@ export default {
         }
     },
 
+    components: {
+        Post
+    },
+
     mounted() {
         this.getPosts()
     },
@@ -67,20 +65,20 @@ export default {
 
         store() {
             const id = this.image ? this.image.id : null
-            api.post('/api/posts', {title: this.title, content: this.content, image_id: id})
-            .then(res => {
-                this.title = ''
-                this.content = ''
-                this.image = null
-                this.posts.unshift(res.data.data)
-            })
+            api.post('/api/posts', { title: this.title, content: this.content, image_id: id })
+                .then(res => {
+                    this.title = ''
+                    this.content = ''
+                    this.image = null
+                    this.posts.unshift(res.data.data)
+                })
         },
 
         getPosts() {
             api.get('/api/posts')
-            .then(res => {
-                this.posts = res.data.data
-            })
+                .then(res => {
+                    this.posts = res.data.data
+                })
         },
 
         selectFile() {
