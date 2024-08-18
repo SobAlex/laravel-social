@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 class StoreController extends Controller
 {
-    public function store(StoreRequest $request) {
+    public function store(StoreRequest $request)
+    {
 
         $data = $request->validated();
 
@@ -17,12 +18,13 @@ class StoreController extends Controller
 
         $user = User::where('email', $data['email'])->first();
 
-        if($user) return response(['error' => 'Пользователь с таким email уже зарегистрирован!'], 403);
+        if ($user) return response(['error' => 'Пользователь с таким email уже зарегистрирован!'], 403);
 
         $user = User::create($data);
 
         $token = auth()->tokenById($user->id);
 
-        return response(['access_token' => $token]);
+        // return response(['access_token' => $token]);
+        return $data;
     }
 }

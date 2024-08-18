@@ -7,15 +7,25 @@ use App\Http\Requests\Post\StoreRequest;
 use App\Models\PostImage;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\SubscriberFollowing;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\Post\PostResource;
 
 class UserController extends Controller
 {
 
-    public function index() {
-
+    public function index()
+    {
         $users = User::whereNot('id', auth()->id())->get();
+
+        $followingIds = SubscriberFollowing::where('subscriber_id', auth()->id())
+            ->get('following_id')->pluck('following_id')->toArray();
+
+        foreach ($users as $user) {
+            if (in_array($user->id, $followingIds)) {
+                $user->is_followed = true;
+            }
+        }
 
         return UserResource::collection($users);
     }
@@ -23,6 +33,15 @@ class UserController extends Controller
     public function post(User $user)
     {
         return PostResource::collection($user->posts);
+    }
+
+    public function toggleFollowing(User $user)
+    {
+        $res = auth()->user()->followings()->toggle($user->id);
+
+        $data['is_followed'] = count($res['attached']) > 0;
+
+        return $data;
     }
 
 

@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 //      return $request->user();
 // });
 
+Route::group(['namespace' => 'User', 'prefix' => 'users'], function () {
+    Route::post('/', [App\Http\Controllers\User\StoreController::class, 'store']);
+});
+
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
     Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
@@ -28,12 +32,9 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index']);
     Route::get('/users/{user}/posts', [App\Http\Controllers\UserController::class, 'post']);
+    Route::post('/users/{user}/toggle_following', [\App\Http\Controllers\UserController::class, 'toggleFollowing']);
 
     Route::post('/posts', [App\Http\Controllers\PostController::class, 'store']);
     Route::get('/posts', [App\Http\Controllers\PostController::class, 'index']);
     Route::post('/post_images', [App\Http\Controllers\PostImageController::class, 'store']);
-});
-
-Route::group(['namespace' => 'User', 'prefix' => 'users' ], function() {
-    Route::post('/', [App\Http\Controllers\User\StoreController::class, 'store']);
 });

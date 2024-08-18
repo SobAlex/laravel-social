@@ -95,6 +95,9 @@ export default {
                 .then(res => {
                     this.image = res.data.data
                 })
+                .catch(error => {
+                    this.error = error.response.data.error
+                })
         }
     },
 

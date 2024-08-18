@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 class PostImageController extends Controller
 {
-    public function store(StoreRequest $request) {
+    public function store(StoreRequest $request)
+    {
 
         $path = Storage::disk('public')->put('/images', $request['image']);
 
