@@ -5,59 +5,70 @@ const router = createRouter({
 
     routes: [
         {
-            path: '/users', component: () => import('../views/user/Index.vue'),
-            name: 'user.index'
+            path: "/users",
+            component: () => import("../views/user/Index.vue"),
+            name: "user.index",
         },
 
         {
-            path: '/users/:id', component: () => import('../views/user/Show.vue'),
-            name: 'user.show'
+            path: "/users/:id/show",
+            component: () => import("../views/user/Show.vue"),
+            name: "user.show",
+        },
+        {
+            path: "/users/feed",
+            component: () => import("../views/user/Feed.vue"),
+            name: "user.feed",
         },
 
         {
-            path: '/users/login', component: () => import('../views/user/Login.vue'),
-            name: 'user.login'
+            path: "/users/login",
+            component: () => import("../views/user/Login.vue"),
+            name: "user.login",
         },
 
         {
-            path: '/users/registration', component: () => import('../views/user/Registration.vue'),
-            name: 'user.registration'
+            path: "/users/registration",
+            component: () => import("../views/user/Registration.vue"),
+            name: "user.registration",
         },
 
         {
-            path: '/users/personal', component: () => import('../views/user/Personal.vue'),
-            name: 'user.personal'
+            path: "/users/personal",
+            component: () => import("../views/user/Personal.vue"),
+            name: "user.personal",
         },
 
         // {
         //     path: '*', component: () => import('../views/PageNotFound.vue'),
         //     name: '404'
         // }
-    ]
-})
+    ],
+});
 
 router.beforeEach((to, from, next) => {
-
-    const token = localStorage.getItem('access_token')
+    const token = localStorage.getItem("access_token");
 
     if (!token) {
-        if (to.name === 'user.login' || to.name === 'user.registration') {
-            return next()
+        if (to.name === "user.login" || to.name === "user.registration") {
+            return next();
         } else {
             return next({
-                name: 'user.login'
-            })
+                name: "user.login",
+            });
         }
     }
 
-    if (to.name === 'user.login' || to.name === 'user.registration' && token) {
+    if (
+        to.name === "user.login" ||
+        (to.name === "user.registration" && token)
+    ) {
         return next({
-            name: 'user.personal'
-        })
+            name: "user.personal",
+        });
     }
 
-    next()
+    next();
+});
 
-})
-
-export default router
+export default router;

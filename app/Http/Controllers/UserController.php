@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\Post\StoreRequest;
-use App\Models\PostImage;
-use Illuminate\Support\Facades\DB;
-use App\Models\User;
-use App\Models\SubscriberFollowing;
-use App\Http\Resources\User\UserResource;
+use App\Http\Requests\User\StatRequest;
 use App\Http\Resources\Post\PostResource;
+use App\Http\Resources\User\UserResource;
+use App\Models\LikedPost;
+use App\Models\Post;
+use App\Models\PostImage;
+use App\Models\SubscriberFollowing;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -42,6 +45,21 @@ class UserController extends Controller
         $data['is_followed'] = count($res['attached']) > 0;
 
         return $data;
+    }
+
+    public function followingPost()
+    {
+        $followedIds = auth()->user()->followings()->latest()->get()->pluck('id')->toArray();
+
+        // $likedPostIds = LikedPost::where('user_id', auth()->id())
+        //     ->get('post_id')->pluck('post_id')->toArray();
+
+        // $posts = Post::whereIn('user_id', $followedIds)->withCount('repostedByPosts')
+        //     ->whereNotIn('id', $likedPostIds)->get();
+
+        $posts = Post::whereIn('user_id', $followedIds)->get();
+
+        return PostResource::collection($posts);
     }
 
 

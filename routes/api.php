@@ -33,6 +33,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index']);
     Route::get('/users/{user}/posts', [App\Http\Controllers\UserController::class, 'post']);
     Route::post('/users/{user}/toggle_following', [\App\Http\Controllers\UserController::class, 'toggleFollowing']);
+    Route::get('/users/following_posts', [\App\Http\Controllers\UserController::class, 'followingPost']);
 
     Route::post('/posts', [App\Http\Controllers\PostController::class, 'store']);
     Route::get('/posts', [App\Http\Controllers\PostController::class, 'index']);
