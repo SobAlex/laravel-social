@@ -8,8 +8,9 @@
 </template>
 
 <script>
-import api from '../../api';
+
 import Post from "../../components/Post.vue";
+import api from '../../api';
 
 export default {
     name: "Feed",
@@ -34,6 +35,7 @@ export default {
             api.get(`/api/users/following_posts`)
                 .then(res => {
                     this.posts = res.data.data
+
                     console.log(this.posts);
                 })
         },

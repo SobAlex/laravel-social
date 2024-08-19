@@ -38,4 +38,5 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::post('/posts', [App\Http\Controllers\PostController::class, 'store']);
     Route::get('/posts', [App\Http\Controllers\PostController::class, 'index']);
     Route::post('/post_images', [App\Http\Controllers\PostImageController::class, 'store']);
+    Route::get('/posts/{post}/toggle_like', [\App\Http\Controllers\PostController::class, 'toggleLike']);
 });

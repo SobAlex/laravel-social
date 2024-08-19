@@ -15,6 +15,7 @@ const router = createRouter({
             component: () => import("../views/user/Show.vue"),
             name: "user.show",
         },
+
         {
             path: "/users/feed",
             component: () => import("../views/user/Feed.vue"),

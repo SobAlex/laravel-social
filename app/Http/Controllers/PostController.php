@@ -2,19 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Post\CommentRequest;
+use App\Http\Requests\Post\RepostRequest;
 use App\Http\Requests\Post\StoreRequest;
-use App\Models\PostImage;
-use Illuminate\Support\Facades\DB;
-use App\Models\Post;
+use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\Post\PostResource;
+use App\Models\Comment;
+use App\Models\LikedPost;
+use App\Models\Post;
+use App\Models\PostImage;
+use App\Models\SubscriberFollowing;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
 
-    public function index() {
-
+    public function index()
+    {
         $posts = Post::where('user_id', auth()->id())->latest()->get();
+
+        $likedPostIds = LikedPost::where('user_id', auth()->id())
+            ->get('post_id')->pluck('post_id')->toArray();
+
+        foreach ($posts as $post) {
+            if (in_array($post->id, $likedPostIds)) {
+                $post->is_liked = true;
+            }
+        }
 
         return PostResource::collection($posts);
     }
@@ -58,5 +72,14 @@ class PostController extends Controller
                 'post_id' => $post->id
             ]);
         }
+    }
+
+    public function toggleLike(Post $post)
+    {
+        $res = auth()->user()->likedPosts()->toggle($post->id);
+
+        $data['is_liked'] = count($res['attached']) > 0;
+        $data['likes_count'] = $post->likedUsers()->count();
+        return $data;
     }
 }
