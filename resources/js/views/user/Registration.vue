@@ -1,23 +1,26 @@
 <template>
     <div>
         <div class="w-96 mx-auto">
-
             <div>
                 <input v-model="name" type="name" placeholder="name"
                        class="w-96 p-1 mb-2 border border-inherit rounded-lg">
             </div>
+
             <div>
                 <input v-model="email" type="email" placeholder="email"
                        class="w-96 p-1 mb-2 border border-inherit rounded-lg">
             </div>
+
             <div>
                 <input v-model="password" type="password" placeholder="password"
                        class="w-96 p-1 mb-2 border border-inherit rounded-lg">
             </div>
+
             <div>
                 <input v-model="password_confirmation" type="password" placeholder="password_confirmation"
                        class="w-96 p-1 mb-2 border border-inherit rounded-lg">
             </div>
+
             <div>
                 <input @click.prevent="registration" type="submit" value="register"
                 class="block float-right mx-auto w-32 p-1 bg-sky-400 text-white rounded-lg">
@@ -72,5 +75,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

@@ -13,38 +13,33 @@ import Post from "../../components/Post.vue";
 import api from '../../api';
 
 export default {
+
     name: "Feed",
 
     data() {
         return {
             posts: [],
-
         }
     },
 
     components: {
         Post
     },
+
     mounted() {
         this.getPosts()
     },
 
     methods: {
-
         getPosts() {
             api.get(`/api/users/following_posts`)
                 .then(res => {
                     this.posts = res.data.data
-
-                    console.log(this.posts);
                 })
         },
-
-
     }
 }
 </script>
 
 <style scoped>
-
 </style>

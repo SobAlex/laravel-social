@@ -17,7 +17,6 @@
             <div>
                 <a v-if="image" @click.prevent="image = null" class="ml-3" href="#">Cancel</a>
             </div>
-
         </div>
 
         <div class="mt-2 mb-3" v-if="image">
@@ -62,7 +61,6 @@ export default {
     },
 
     methods: {
-
         store() {
             const id = this.image ? this.image.id : null
             api.post('/api/posts', { title: this.title, content: this.content, image_id: id })
@@ -105,5 +103,4 @@ export default {
 </script>
 
 <style lang="">
-
 </style>

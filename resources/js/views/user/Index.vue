@@ -7,6 +7,7 @@
                     <p>{{ user.name }}</p>
                     <p>{{ user.email }}</p>
                 </router-link>
+
                 <div>
                     <a @click.prevent="toggleFollowing(user)"
                        :class="['block p-2 w-32 text-center text-sm rounded-3xl', user.is_followed ? 'bg-white text-sky-500 border border-sky-500' : 'bg-sky-500 text-white']" href="#">
@@ -18,8 +19,11 @@
 </template>
 
 <script>
+
 import api from "../../api";
+
 export default {
+
     name: "Index",
 
     data() {
@@ -46,12 +50,9 @@ export default {
                     user.is_followed = res.data.is_followed
                 })
         }
-
-
     }
 }
 </script>
 
 <style scoped>
-
 </style>

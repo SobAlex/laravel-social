@@ -10,9 +10,7 @@ class Post extends Model
     protected $table = 'posts';
     protected $guarded = false;
     protected $withCount = ['comments'];
-
     protected $with = ['image', 'likedUsers', 'repostedPost', 'user'];
-
 
     public function image()
     {
@@ -39,7 +37,6 @@ class Post extends Model
     {
         return $this->hasMany(Post::class, 'reposted_id', 'id');
     }
-
 
     public function comments()
     {

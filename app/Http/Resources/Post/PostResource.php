@@ -14,8 +14,8 @@ class PostResource extends JsonResource
      */
     public function toArray($request)
     {
-
         $url = isset($this->image) ? $this->image->url : null;
+
         return [
             'id' => $this->id,
             'title' => $this->title,

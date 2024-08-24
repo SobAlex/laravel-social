@@ -13,7 +13,6 @@ import api from '../../api';
 import Post from '../../components/Post.vue';
 
 export default {
-
     name: 'Personal',
 
     data() {
@@ -44,5 +43,4 @@ export default {
 </script>
 
 <style lang="">
-
 </style>
