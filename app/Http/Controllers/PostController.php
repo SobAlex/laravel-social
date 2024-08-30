@@ -33,12 +33,11 @@ class PostController extends Controller
         return PostResource::collection($posts);
     }
 
-    public function store(StoreRequest $request) {
-
+    public function store(StoreRequest $request)
+    {
         $data = $request->validated();
 
         try {
-
             DB::beginTransaction();
 
             $imageId = $data['image_id'];
@@ -52,17 +51,23 @@ class PostController extends Controller
             PostImage::clearStorage();
 
             DB::commit();
-
         } catch (\Exception $exception) {
-
-            DB::rollback();
-
-            return responce()->json(['error' => $exception->getMessage()]);
-
+            DB::rollBack();
+            return response()->json(['error' => $exception->getMessage()]);
         }
 
         return new PostResource($post);
     }
+
+    public function repost(RepostRequest $request, Post $post)
+    {
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
+        $data['reposted_id'] = $post->id;
+
+        Post::create($data);
+    }
+
 
     private function processImage($post, $imageId)
     {
@@ -77,9 +82,10 @@ class PostController extends Controller
     public function toggleLike(Post $post)
     {
         $res = auth()->user()->likedPosts()->toggle($post->id);
+
         $data['is_liked'] = count($res['attached']) > 0;
         $data['likes_count'] = $post->likedUsers()->count();
-
         return $data;
     }
+
 }
