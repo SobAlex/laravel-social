@@ -77,12 +77,12 @@
             </div>
         </div> -->
 
-        <!-- <div class="mt-4">
+        <div class="mt-4">
             <div class=" mb-3">
-                <div class="flex items-center">
+                <!-- <div class="flex items-center">
                     <p v-if="comment" class="mr-2">Answered for {{ comment.user.name }}</p>
                     <p v-if="comment" @click="comment = null" class="cursor-pointer text-sky-400 text-sm">Cancel</p>
-                </div>
+                </div> -->
 
                 <input v-model="body" class="w-96 rounded-3xl border p-2 border-slate-300" type="text"
                        placeholder="Your comment here...">
@@ -92,7 +92,7 @@
                 <a @click.prevent="storeComment(post)" href="#" class="block p-2 w-32 text-center rounded-3xl bg-green-600 text-white
                 hover:bg-white hover:border hover:border-green-600 hover:text-green-600 box-border ml-auto">Comment</a>
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -112,6 +112,7 @@ export default {
         return {
             title: '',
             content: '',
+            body: '',
             is_repost: false,
             // repostedId: null,
         }
@@ -123,6 +124,18 @@ export default {
                 .then(res => {
                     post.is_liked = res.data.is_liked
                     post.likes_count = res.data.likes_count
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
+
+        storeComment(post) {
+            // const commentId = this.comment ? this.comment.id : null
+            api.post(`/api/posts/${post.id}/comment`, {body: this.body})
+                .then(res => {
+                    this.body = ''
+                    console.log(res)
                 })
                 .catch(error => {
                     console.log(error)

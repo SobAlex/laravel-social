@@ -88,4 +88,15 @@ class PostController extends Controller
         return $data;
     }
 
+    public function comment(Post $post, CommentRequest $request)
+    {
+        $data = $request->validated();
+        $data['post_id'] = $post->id;
+        $data['user_id'] = auth()->id();
+
+        $comment = Comment::create($data);
+
+        return new CommentResource($comment);
+    }
+
 }
