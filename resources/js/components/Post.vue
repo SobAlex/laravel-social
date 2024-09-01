@@ -136,9 +136,13 @@ export default {
                 })
         },
 
+        setParentId(comment){
+            this.comment = comment
+        },
+
         storeComment(post) {
             const commentId = this.comment ? this.comment.id : null
-            api.post(`/api/posts/${post.id}/comment`, {body: this.body})
+            api.post(`/api/posts/${post.id}/comment`, {body: this.body, parent_id: commentId})
                 .then(res => {
                     this.body = ''
                     this.comments.unshift(res.data.data)
@@ -146,8 +150,8 @@ export default {
                     post.comments_count++
                     this.isShowed = true
                 })
-                .catch(error => {
-                    console.log(error)
+                .catch(e => {
+                    console.log(e)
                     this.errors = e.response.data.errors
                 })
         },
