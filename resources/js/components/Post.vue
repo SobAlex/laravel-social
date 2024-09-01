@@ -142,7 +142,10 @@ export default {
             api.post(`/api/posts/${post.id}/comment`, {body: this.body})
                 .then(res => {
                     this.body = ''
-                    console.log(res)
+                    this.comments.unshift(res.data.data)
+                    this.comment = null
+                    post.comments_count++
+                    this.isShowed = true
                 })
                 .catch(error => {
                     console.log(error)
