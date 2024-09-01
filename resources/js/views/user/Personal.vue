@@ -2,10 +2,18 @@
     <div class="w-96 mx-auto">
         <div class="mt-2.5">
           <input v-model="title" type="text" class="w-96 p-1 mb-2 border border-inherit rounded-lg" placeholder="title">
+
+          <div v-if="errors.title">
+                <p v-for="error in errors.title" class="text-sm mt-2 text-red-500">{{ error }}</p>
+          </div>
         </div>
 
         <div class="mt-2.5">
           <textarea v-model="content" rows="4" class="w-96 p-1 mb-2 border border-inherit rounded-lg" placeholder="content"></textarea>
+
+          <div v-if="errors.content">
+             <p v-for="error in errors.content" class="text-sm mb-2 text-red-500">{{ error }}</p>
+          </div>
         </div>
 
         <div class="flex mb-3 items-center">
@@ -48,7 +56,8 @@ export default {
             title: '',
             content: '',
             image: null,
-            posts: []
+            posts: [],
+            errors: []
         }
     },
 
@@ -63,13 +72,17 @@ export default {
     methods: {
         store() {
             const id = this.image ? this.image.id : null
-            api.post('/api/posts', { title: this.title, content: this.content, image_id: id })
-                .then(res => {
-                    this.title = ''
-                    this.content = ''
-                    this.image = null
-                    this.posts.unshift(res.data.data)
-                })
+
+            api.post('/api/posts', {title: this.title, content: this.content, image_id: id})
+            .then(res => {
+                this.title = ''
+                this.content = ''
+                this.image = null
+                this.posts.unshift(res.data.data)
+            }).catch (e => {
+                console.log(e)
+                this.errors = e.response.data.errors
+            })
         },
 
         getPosts() {

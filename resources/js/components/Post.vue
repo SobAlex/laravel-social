@@ -59,7 +59,7 @@
             </div>
         </div>
 
-        <!-- <div v-if="post.comments_count > 0" class="mt-4">
+        <div v-if="post.comments_count > 0" class="mt-4">
 
             <p class="cursor-pointer" v-if="!isShowed" @click="getComments(post)">Show {{ post.comments_count }} comments</p>
             <p class="cursor-pointer" v-if="isShowed" @click="isShowed = false">Close</p>
@@ -75,17 +75,20 @@
                     <p class="mt-2 text-right text-sm">{{ comment.date }}</p>
                 </div>
             </div>
-        </div> -->
+        </div>
 
         <div class="mt-4">
             <div class=" mb-3">
-                <!-- <div class="flex items-center">
+                <div class="flex items-center">
                     <p v-if="comment" class="mr-2">Answered for {{ comment.user.name }}</p>
                     <p v-if="comment" @click="comment = null" class="cursor-pointer text-sky-400 text-sm">Cancel</p>
-                </div> -->
+                </div>
 
                 <input v-model="body" class="w-96 rounded-3xl border p-2 border-slate-300" type="text"
                        placeholder="Your comment here...">
+                <div v-if="errors.body">
+                    <p v-for="error in errors.body" class="text-sm mb-2 text-red-500">{{ error }}</p>
+                </div>
             </div>
 
             <div>
@@ -114,7 +117,11 @@ export default {
             content: '',
             body: '',
             is_repost: false,
-            // repostedId: null,
+            errors: [],
+            repostedId: null,
+            comments: [],
+            isShowed: false,
+            comment: null
         }
     },
 
@@ -131,7 +138,7 @@ export default {
         },
 
         storeComment(post) {
-            // const commentId = this.comment ? this.comment.id : null
+            const commentId = this.comment ? this.comment.id : null
             api.post(`/api/posts/${post.id}/comment`, {body: this.body})
                 .then(res => {
                     this.body = ''
@@ -139,6 +146,15 @@ export default {
                 })
                 .catch(error => {
                     console.log(error)
+                    this.errors = e.response.data.errors
+                })
+        },
+
+        getComments(post) {
+            api.get(`/api/posts/${post.id}/comment`)
+                .then(res => {
+                    this.comments = res.data.data
+                    this.isShowed = true
                 })
         },
 
