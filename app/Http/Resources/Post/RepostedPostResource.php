@@ -21,6 +21,7 @@ class RepostedPostResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'image_url' => $url,
+            'user' => new UserResource($this->user),
         ];
     }
 }

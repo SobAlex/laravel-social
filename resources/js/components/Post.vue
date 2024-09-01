@@ -1,13 +1,13 @@
 <template>
     <div class="mb-8 pb-8 border-b border-gray-400">
         <h1 class="text-xl">{{ post.title }}</h1>
-        <!-- <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: post.user.id}} ">{{ post.user.name }}</router-link> -->
+        <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: post.user.id}} ">{{ post.user.name }}</router-link>
         <img class="my-3 mx-auto" v-if="post.image_url" :src="post.image_url" :alt="post.title"/>
         <p>{{ post.content }}</p>
 
         <div v-if="post.reposted_post" class="bg-gray-100 p-4 my-4 border border-gray-200">
             <h1 class="text-xl">{{ post.reposted_post.title }}</h1>
-            <!-- <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: post.reposted_post.user.id}} ">{{ post.reposted_post.user.name }}</router-link> -->
+            <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: post.reposted_post.user.id}} ">{{ post.reposted_post.user.name }}</router-link>
             <img class="my-3 mx-auto" v-if="post.reposted_post.image_url" :src="post.reposted_post.image_url"
                  :alt="post.reposted_post.title"/>
             <p>{{ post.reposted_post.content }}</p>
