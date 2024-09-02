@@ -1,5 +1,7 @@
 <template lang="">
     <div class="w-96 mx-auto">
+        <Stat :stats="stats"></Stat>
+
         <div class="mt-2.5">
           <input v-model="title" type="text" class="w-96 p-1 mb-2 border border-inherit rounded-lg" placeholder="title">
 
@@ -46,6 +48,7 @@
 
 import api from '../../api';
 import Post from '../../components/Post.vue';
+import Stat from "../../components/Stat.vue";
 
 export default {
 
@@ -57,19 +60,30 @@ export default {
             content: '',
             image: null,
             posts: [],
-            errors: []
+            errors: [],
+            stats: []
         }
     },
 
     components: {
-        Post
+        Post,
+        Stat
     },
 
     mounted() {
         this.getPosts()
+        this.getStats()
     },
 
     methods: {
+
+        getStats() {
+            api.post('/api/users/stats', { user_id: null})
+            .then( res => {
+                this.stats = res.data.data
+            })
+        },
+
         store() {
             const id = this.image ? this.image.id : null
 
@@ -82,6 +96,8 @@ export default {
             }).catch (e => {
                 console.log(e)
                 this.errors = e.response.data.errors
+
+                return this.errors
             })
         },
 
